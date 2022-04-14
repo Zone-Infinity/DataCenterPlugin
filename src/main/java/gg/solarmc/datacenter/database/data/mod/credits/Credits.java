@@ -41,7 +41,7 @@ public class Credits extends SingleData<Double> {
                 return 0.0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Database#getBalance caught an exception");
+            throw new RuntimeException("Credits#get caught an exception");
         }
     }
 
@@ -81,7 +81,7 @@ public class Credits extends SingleData<Double> {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Database#updateBalance caught an exception:", e);
+            throw new RuntimeException("Credits#update caught an exception:", e);
         }
     }
 }
