@@ -1,4 +1,4 @@
-package gg.solarmc.datacenter.database;
+package gg.solarmc.datacenter.database.data;
 
 public class SingleDataConstants {
     private final String tableName;

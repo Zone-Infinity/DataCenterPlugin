@@ -1,8 +1,8 @@
 package gg.solarmc.datacenter.database.data.mod.credits;
 
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.SingleDataConstants;
 import gg.solarmc.datacenter.database.data.SingleData;
+import gg.solarmc.datacenter.database.data.SingleDataConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

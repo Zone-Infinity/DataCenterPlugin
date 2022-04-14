@@ -1,8 +1,8 @@
 package gg.solarmc.datacenter.database.data.mod.credits;
 
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.SingleDataConstants;
 import gg.solarmc.datacenter.database.data.DataKey;
+import gg.solarmc.datacenter.database.data.SingleDataConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +37,7 @@ public class CreditsKey implements DataKey<Credits> {
         return cache;
     }
 
+    @Override
     public SingleDataConstants getConstants() {
         return constants;
     }
