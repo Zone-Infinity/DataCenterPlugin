@@ -1,0 +1,4 @@
+name: SolarDataCenter
+version: '${project.version}'
+main: gg.solarmc.datacenter.SolarDataCenter
+authors: [ iSoham ]
