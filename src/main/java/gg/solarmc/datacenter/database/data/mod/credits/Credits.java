@@ -1,6 +1,7 @@
 package gg.solarmc.datacenter.database.data.mod.credits;
 
 import gg.solarmc.datacenter.database.DataCenter;
+import gg.solarmc.datacenter.database.SingleDataConstants;
 import gg.solarmc.datacenter.database.data.SingleData;
 
 import java.sql.Connection;
@@ -20,20 +21,21 @@ public class Credits extends SingleData<Double> {
         Map<String, Credits> cache = CreditsKey.INSTANCE.getCache();
         if (cache.containsKey(uuid)) return cache.get(uuid).value;
 
+        SingleDataConstants constants = CreditsKey.INSTANCE.getConstants();
         try (Connection connection = center.getConnection();
-             PreparedStatement statement = connection.prepareStatement(CreditsConstants.SELECT_BALANCE_QUERY)
+             PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery())
         ) {
             statement.setString(1, uuid);
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
-                    value = result.getDouble(CreditsConstants.BALANCE);
+                    value = result.getDouble(constants.getValueName());
                     CreditsKey.INSTANCE.getCache().put(uuid, this);
                     return value;
                 }
             }
 
-            try (PreparedStatement insert = connection.prepareStatement(CreditsConstants.INSERT_PLAYER)) {
+            try (PreparedStatement insert = connection.prepareStatement(constants.insertPlayerQuery())) {
                 insert.setString(1, uuid);
                 insert.execute();
 
@@ -51,14 +53,16 @@ public class Credits extends SingleData<Double> {
         this.value = value;
         CreditsKey.INSTANCE.getCache().put(uuid, this);
 
-        update(CreditsConstants.SET_BALANCE_QUERY, value);
+        update(CreditsKey.INSTANCE.getConstants().setValueQuery(), value);
     }
 
     public void add(double balance) {
         value += balance;
         CreditsKey.INSTANCE.getCache().put(uuid, this);
 
-        update(CreditsConstants.ADD_BALANCE_QUERY, value);
+        SingleDataConstants constants = CreditsKey.INSTANCE.getConstants();
+        update(String.format("UPDATE %s SET %s = MAX(0, %s + ?) WHERE %s = ?",
+                constants.getTableName(), constants.getValueName(), constants.getValueName(), constants.getUUIDName()), value);
     }
 
     public void remove(double balance) {
@@ -74,7 +78,7 @@ public class Credits extends SingleData<Double> {
 
             int rows = update.executeUpdate();
             if (rows == 0) {
-                try (PreparedStatement insert = connection.prepareStatement(CreditsConstants.INSERT_PLAYER_WITH_BALANCE)) {
+                try (PreparedStatement insert = connection.prepareStatement(CreditsKey.INSTANCE.getConstants().insertPlayerWithValueQuery())) {
                     insert.setString(1, uuid);
                     insert.setDouble(2, balance);
                     insert.execute();
