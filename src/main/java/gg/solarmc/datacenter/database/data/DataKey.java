@@ -12,4 +12,6 @@ public interface DataKey<T extends Data> {
     T getData(DataCenter center, String uuid);
 
     Map<String, T> getCache();
+
+    SingleDataConstants getConstants();
 }

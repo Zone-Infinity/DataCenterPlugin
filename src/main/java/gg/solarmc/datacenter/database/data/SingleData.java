@@ -10,6 +10,7 @@ public abstract class SingleData<T> extends Data {
         value = null;
     }
 
+    // TODO: Remove duplicate codes ...
     public abstract T get();
 
     public abstract void set(T value);
