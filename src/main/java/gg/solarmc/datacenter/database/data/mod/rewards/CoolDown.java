@@ -1,41 +1,35 @@
 package gg.solarmc.datacenter.database.data.mod.rewards;
 
-import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.data.single.SingleData;
-
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class MonthlyRewards extends SingleData<Long> {
-    private final static long month = 2592000000L;
+public class CoolDown {
+    private final String key;
+    private final Long expiry;
 
-    public MonthlyRewards(DataCenter center, String uuid, Long value) {
-        super(center, uuid, value);
+    public CoolDown(String key, Long expiry) {
+        this.key = key;
+        this.expiry = expiry;
     }
 
-    @Override
-    public Long get() {
-        if (value != null) return value;
-
-        value = getValue(MonthlyRewardsKey.INSTANCE.getConstants(), 0L, Long.class);
-        MonthlyRewardsKey.INSTANCE.getCache().put(uuid, value);
-        return value;
+    public String getKey() {
+        return key;
     }
 
-    @Override
-    public void set(Long value) {
-        this.value = value;
-        MonthlyRewardsKey.INSTANCE.getCache().put(uuid, value);
-        setValue(MonthlyRewardsKey.INSTANCE.getConstants(), value);
+    public Long getExpiryTime() {
+        return expiry;
     }
 
     public boolean isAvailable() {
-        return Instant.now().toEpochMilli() - get() > month;
+        return expiry < Instant.now().toEpochMilli();
     }
 
     public String getFormatted() {
         if (isAvailable()) return "0";
 
-        long milliseconds = value + month;
+        long milliseconds = expiry - Instant.now().toEpochMilli();
         long seconds = (milliseconds / 1000) % 60;
         long minutes = (milliseconds / (1000 * 60)) % 60;
         long hours = (milliseconds / (1000 * 60 * 60)) % 24;
@@ -62,7 +56,23 @@ public class MonthlyRewards extends SingleData<Long> {
         return builder.toString();
     }
 
-    public void setCoolDownNow() {
-        set(Instant.now().getEpochSecond());
+    @Override
+    public String toString() {
+        return key + "=" + expiry;
+    }
+
+    public static String serialize(List<CoolDown> coolDowns) {
+        return coolDowns.stream()
+                .map(CoolDown::toString)
+                .collect(Collectors.joining(","));
+    }
+
+    public static List<CoolDown> deserialize(String value) {
+        return Arrays.stream(value.split(","))
+                .map(it -> {
+                    String[] coolDown = it.split("=");
+                    return new CoolDown(coolDown[0], Long.parseLong(coolDown[1]));
+                })
+                .collect(Collectors.toList());
     }
 }

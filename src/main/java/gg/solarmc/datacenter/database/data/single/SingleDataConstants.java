@@ -6,7 +6,6 @@ public class SingleDataConstants {
     private final String uuid;
     private final String value;
 
-
     public SingleDataConstants(String tableName, String value) {
         this.tableName = tableName;
         this.id = "id";

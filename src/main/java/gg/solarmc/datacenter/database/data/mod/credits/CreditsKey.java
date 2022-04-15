@@ -33,12 +33,11 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
     }
 
     @Override
-    public Map<String, Double> getCache() {
-        return cache;
-    }
-
-    @Override
     public SingleDataConstants getConstants() {
         return constants;
+    }
+
+    public Map<String, Double> getCache() {
+        return cache;
     }
 }

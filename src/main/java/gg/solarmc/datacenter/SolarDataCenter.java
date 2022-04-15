@@ -2,7 +2,7 @@ package gg.solarmc.datacenter;
 
 import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.mod.credits.CreditsKey;
-import gg.solarmc.datacenter.database.data.mod.rewards.MonthlyRewardsKey;
+import gg.solarmc.datacenter.database.data.mod.rewards.RewardsKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -17,7 +17,7 @@ public final class SolarDataCenter extends JavaPlugin {
     public void onEnable() {
         center = new DataCenter(getLogger(), getDataFolder().toPath());
         center.registerKey(CreditsKey.INSTANCE);
-        center.registerKey(MonthlyRewardsKey.INSTANCE);
+        center.registerKey(RewardsKey.INSTANCE);
 
         getLogger().info("SolarDataCenter successfully enabled");
     }
