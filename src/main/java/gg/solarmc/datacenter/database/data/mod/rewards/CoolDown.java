@@ -22,6 +22,10 @@ public class CoolDown {
         return expiry;
     }
 
+    public Long getCoolDown() {
+        return expiry - Instant.now().toEpochMilli();
+    }
+
     public boolean isAvailable() {
         return expiry < Instant.now().toEpochMilli();
     }
@@ -29,7 +33,7 @@ public class CoolDown {
     public String getFormatted() {
         if (isAvailable()) return "0";
 
-        long milliseconds = expiry - Instant.now().toEpochMilli();
+        long milliseconds = getCoolDown();
         long seconds = (milliseconds / 1000) % 60;
         long minutes = (milliseconds / (1000 * 60)) % 60;
         long hours = (milliseconds / (1000 * 60 * 60)) % 24;
@@ -40,13 +44,13 @@ public class CoolDown {
             return milliseconds + " milliseconds";
         } else {
             if (days > 0)
-                builder.append(days).append(" day, ");
+                builder.append(days).append(" day(s), ");
             if (hours > 0)
-                builder.append(hours).append(" hour, ");
+                builder.append(hours).append(" hour(s), ");
             if (minutes > 0)
-                builder.append(minutes).append(" minute, ");
+                builder.append(minutes).append(" minute(s), ");
             if (seconds > 0)
-                builder.append(seconds).append(" second, ");
+                builder.append(seconds).append(" second(s), ");
         }
         builder.setLength(builder.length() - 2);
 
