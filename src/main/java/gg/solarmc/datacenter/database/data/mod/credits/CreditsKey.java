@@ -1,16 +1,16 @@
 package gg.solarmc.datacenter.database.data.mod.credits;
 
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.data.DataKey;
-import gg.solarmc.datacenter.database.data.SingleDataConstants;
+import gg.solarmc.datacenter.database.data.single.SingleDataConstants;
+import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreditsKey implements DataKey<Credits> {
+public class CreditsKey implements SingleDataKey<Credits, Double> {
     public static CreditsKey INSTANCE = new CreditsKey();
 
-    private final Map<String, Credits> cache = new HashMap<>();
+    private final Map<String, Double> cache = new HashMap<>();
     private final SingleDataConstants constants;
 
     private CreditsKey() {
@@ -29,11 +29,11 @@ public class CreditsKey implements DataKey<Credits> {
 
     @Override
     public Credits getData(DataCenter center, String uuid) {
-        return new Credits(center, uuid);
+        return new Credits(center, uuid, cache.get(uuid));
     }
 
     @Override
-    public Map<String, Credits> getCache() {
+    public Map<String, Double> getCache() {
         return cache;
     }
 

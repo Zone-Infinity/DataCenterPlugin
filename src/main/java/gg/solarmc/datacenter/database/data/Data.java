@@ -1,6 +1,7 @@
 package gg.solarmc.datacenter.database.data;
 
 import gg.solarmc.datacenter.database.DataCenter;
+import gg.solarmc.datacenter.database.data.single.SingleData;
 
 /**
  * {@link SingleData} : Tables with single value e.g. balance

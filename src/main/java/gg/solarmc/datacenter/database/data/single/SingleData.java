@@ -1,6 +1,7 @@
-package gg.solarmc.datacenter.database.data;
+package gg.solarmc.datacenter.database.data.single;
 
 import gg.solarmc.datacenter.database.DataCenter;
+import gg.solarmc.datacenter.database.data.Data;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,9 +11,8 @@ import java.sql.SQLException;
 public abstract class SingleData<T> extends Data {
     protected T value;
 
-    public SingleData(DataCenter center, String uuid) {
+    public SingleData(DataCenter center, String uuid, T value) {
         super(center, uuid);
-        value = null;
     }
 
     public abstract T get();

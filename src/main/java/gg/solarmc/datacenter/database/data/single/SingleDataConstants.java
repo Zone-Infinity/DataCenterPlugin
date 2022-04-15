@@ -1,4 +1,4 @@
-package gg.solarmc.datacenter.database.data;
+package gg.solarmc.datacenter.database.data.single;
 
 public class SingleDataConstants {
     private final String tableName;
@@ -42,6 +42,10 @@ public class SingleDataConstants {
 
     public String setValueQuery() {
         return String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, value, uuid);
+    }
+
+    public String addNumericValueQuery() {
+        return String.format("UPDATE %s SET %s = MAX(0, %s + ?) WHERE %s = ?", tableName, value, value, uuid);
     }
 
     public String getTableName() {

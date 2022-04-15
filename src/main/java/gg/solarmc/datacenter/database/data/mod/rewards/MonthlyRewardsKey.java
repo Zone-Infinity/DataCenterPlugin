@@ -1,16 +1,16 @@
 package gg.solarmc.datacenter.database.data.mod.rewards;
 
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.data.DataKey;
-import gg.solarmc.datacenter.database.data.SingleDataConstants;
+import gg.solarmc.datacenter.database.data.single.SingleDataConstants;
+import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MonthlyRewardsKey implements DataKey<MonthlyRewards> {
+public class MonthlyRewardsKey implements SingleDataKey<MonthlyRewards, Long> {
     public static MonthlyRewardsKey INSTANCE = new MonthlyRewardsKey();
 
-    private final Map<String, MonthlyRewards> cache = new HashMap<>();
+    private final Map<String, Long> cache = new HashMap<>();
     private final SingleDataConstants constants;
 
     private MonthlyRewardsKey() {
@@ -29,11 +29,11 @@ public class MonthlyRewardsKey implements DataKey<MonthlyRewards> {
 
     @Override
     public MonthlyRewards getData(DataCenter center, String uuid) {
-        return new MonthlyRewards(center, uuid);
+        return new MonthlyRewards(center, uuid, cache.get(uuid));
     }
 
     @Override
-    public Map<String, MonthlyRewards> getCache() {
+    public Map<String, Long> getCache() {
         return cache;
     }
 
