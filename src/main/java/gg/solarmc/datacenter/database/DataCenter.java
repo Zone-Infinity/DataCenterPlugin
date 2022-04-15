@@ -47,6 +47,7 @@ public class DataCenter {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:sqlite:" + dbFilePath);
         config.setConnectionTestQuery("SELECT 1");
+        config.setMaximumPoolSize(8);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -54,14 +55,17 @@ public class DataCenter {
         dataSource = new HikariDataSource(config);
     }
 
+    // TODO: Store the keys and their columns
     // TODO: When properties (columns) are changed in the key, alter the table to add the new columns
     public void registerKey(DataKey<?> key) {
         if (dataKeys.stream().noneMatch(it -> it.getName().equals(key.getName()))) {
-            dataSource.setMaximumPoolSize(dataSource.getMaximumPoolSize() + 20);
+            String createQuery = key.getCreateQuery();
+            if(!createQuery.contains("IF NOT EXISTS")) {
+                throw new IllegalArgumentException("Table create query should have `IF NOT EXISTS`");
+            }
 
             try (Connection connection = dataSource.getConnection();
                  Statement statement = connection.createStatement()) {
-                String createQuery = key.getCreateQuery();
                 statement.execute(createQuery);
 
                 dataKeys.add(key);
