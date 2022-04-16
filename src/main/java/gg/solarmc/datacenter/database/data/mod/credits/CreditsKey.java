@@ -37,7 +37,8 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
         return constants;
     }
 
-    public Map<String, Double> getCache() {
-        return cache;
+    @Override
+    public void updateCache(String uuid, Double value) {
+        cache.put(uuid, value);
     }
 }

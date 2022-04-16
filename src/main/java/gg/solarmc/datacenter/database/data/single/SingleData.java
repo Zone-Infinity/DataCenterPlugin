@@ -13,13 +13,14 @@ public abstract class SingleData<T> extends Data {
 
     public SingleData(DataCenter center, String uuid, T value) {
         super(center, uuid);
+        this.value = value;
     }
 
     public abstract T get();
 
     public abstract void set(T value);
 
-    protected final T getValue(SingleDataConstants constants, T defaultValue, Class<T> klass) {
+    protected final Object getValue(SingleDataConstants constants, T defaultValue) {
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery())
         ) {
@@ -28,10 +29,7 @@ public abstract class SingleData<T> extends Data {
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     Object object = result.getObject(constants.getValueName());
-                    if (klass.isInstance(object)) {
-                        value = (T) object;
-                        return value;
-                    }
+                    return object;
                 }
             }
 
@@ -47,12 +45,8 @@ public abstract class SingleData<T> extends Data {
     }
 
     protected final void setValue(SingleDataConstants constants, T value) {
-        setValueWithQuery(constants.setValueQuery(), constants, value);
-    }
-
-    protected final void setValueWithQuery(String query, SingleDataConstants constants, T value) {
         try (Connection connection = center.getConnection();
-             PreparedStatement update = connection.prepareStatement(query)
+             PreparedStatement update = connection.prepareStatement(constants.setValueQuery())
         ) {
             update.setObject(1, value);
             update.setString(2, uuid);

@@ -24,7 +24,7 @@ public class RewardsKey implements SingleDataKey<Rewards, String> {
 
     @Override
     public String getCreateQuery() {
-            return constants.createTableQuery("VARCHAR", "\"-\"");
+        return constants.createTableQuery("VARCHAR", "\"-\"");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class RewardsKey implements SingleDataKey<Rewards, String> {
     }
 
     @Override
-    public Map<String, String> getCache() {
-        return cache;
+    public void updateCache(String uuid, String value) {
+        cache.put(uuid, value);
     }
 }

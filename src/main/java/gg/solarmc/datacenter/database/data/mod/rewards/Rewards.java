@@ -16,21 +16,21 @@ public class Rewards extends SingleData<String> {
     public String get() {
         if (value != null) return value;
 
-        value = getValue(RewardsKey.INSTANCE.getConstants(), "-", String.class);
-        RewardsKey.INSTANCE.getCache().put(uuid, value);
+        value = (String) getValue(RewardsKey.INSTANCE.getConstants(), "-");
+        RewardsKey.INSTANCE.updateCache(uuid, value);
         return value;
     }
 
     @Override
     public void set(String value) {
         this.value = value;
-        RewardsKey.INSTANCE.getCache().put(uuid, value);
+        RewardsKey.INSTANCE.updateCache(uuid, value);
         setValue(RewardsKey.INSTANCE.getConstants(), value);
     }
 
     public CoolDown getCoolDown(String key) {
         String data = get();
-        if(data.equals("-")) return new CoolDown(key, 0L);
+        if (data.equals("-")) return new CoolDown(key, 0L);
         return CoolDown.deserialize(data)
                 .stream()
                 .filter(it -> it.getKey().equals(key))
