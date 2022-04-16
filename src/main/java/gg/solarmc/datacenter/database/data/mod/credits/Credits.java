@@ -12,12 +12,8 @@ public class Credits extends SingleData<Double> {
     public Double get() {
         if (value != null) return value;
 
-        Object object = getValue(CreditsKey.INSTANCE.getConstants(), 0.0);
-        if (object instanceof Integer)
-            value = ((Integer) object).doubleValue();
-        else
-            value = (Double) object;
-
+        value = getValue(CreditsKey.INSTANCE.getConstants(), 0.0,
+                it -> it.getDouble(CreditsKey.INSTANCE.getConstants().getValueName()));
         CreditsKey.INSTANCE.updateCache(uuid, value);
         return value;
     }
