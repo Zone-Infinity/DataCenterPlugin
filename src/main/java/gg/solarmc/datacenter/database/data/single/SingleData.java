@@ -27,8 +27,11 @@ public abstract class SingleData<T> extends Data {
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
-                    value = result.getObject(constants.getValueName(), klass);
-                    return value;
+                    Object object = result.getObject(constants.getValueName());
+                    if (klass.isInstance(object)) {
+                        value = (T) object;
+                        return value;
+                    }
                 }
             }
 

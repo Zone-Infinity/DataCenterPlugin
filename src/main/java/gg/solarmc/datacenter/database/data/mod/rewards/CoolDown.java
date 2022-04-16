@@ -1,6 +1,7 @@
 package gg.solarmc.datacenter.database.data.mod.rewards;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +73,7 @@ public class CoolDown {
     }
 
     public static List<CoolDown> deserialize(String value) {
+        if (value.equals("-")) return new ArrayList<>();
         return Arrays.stream(value.split(","))
                 .map(it -> {
                     String[] coolDown = it.split("=");

@@ -27,6 +27,7 @@ public class Credits extends SingleData<Double> {
     }
 
     public void add(double balance) {
+        if (value == null) value = 0.0;
         value += balance;
         CreditsKey.INSTANCE.getCache().put(uuid, value);
 

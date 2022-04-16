@@ -29,7 +29,9 @@ public class Rewards extends SingleData<String> {
     }
 
     public CoolDown getCoolDown(String key) {
-        return CoolDown.deserialize(get())
+        String data = get();
+        if(data.equals("-")) return new CoolDown(key, 0L);
+        return CoolDown.deserialize(data)
                 .stream()
                 .filter(it -> it.getKey().equals(key))
                 .findAny()
