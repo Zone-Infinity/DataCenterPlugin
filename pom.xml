@@ -44,6 +44,26 @@
             <artifactId>HikariCP</artifactId>
             <!--suppress MavenPackageUpdate -->
             <version>4.0.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- logging for hikari -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <!--suppress MavenPackageUpdate -->
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <!--suppress MavenPackageUpdate -->
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
 
@@ -83,6 +103,14 @@
                                 <relocation>
                                     <pattern>com.zaxxer.hikari</pattern>
                                     <shadedPattern>gg.solarmc.datacenter.com.zaxxer.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>gg.solarmc.datacenter.org.slf4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ch.qos.logback</pattern>
+                                    <shadedPattern>gg.solarmc.datacenter.ch.qos.logback</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
