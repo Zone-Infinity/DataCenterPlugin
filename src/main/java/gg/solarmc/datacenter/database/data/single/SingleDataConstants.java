@@ -13,10 +13,6 @@ public class SingleDataConstants {
         this.value = value;
     }
 
-    /**
-     * credits - NUMERIC(15, 4)
-     * monthly_rewards - INTEGER
-     */
     public String createTableQuery(String valueType, String defaultValue) {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                         "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
