@@ -1,7 +1,6 @@
 package gg.solarmc.datacenter.database.data.single;
 
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.ResultSetMapper;
 import gg.solarmc.datacenter.database.data.Data;
 
 import java.sql.Connection;
@@ -21,7 +20,7 @@ public abstract class SingleData<T> extends Data {
 
     public abstract void set(T value);
 
-    protected final T getValue(SingleDataConstants constants, T defaultValue, ResultSetMapper<T> getValue) {
+    protected final T getValue(SingleDataConstants constants, T defaultValue, Class<T> klass) {
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery())
         ) {
@@ -30,7 +29,7 @@ public abstract class SingleData<T> extends Data {
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     //noinspection UnnecessaryLocalVariable
-                    T value = getValue.map(result);
+                    T value = result.getObject(constants.getValueName(), klass);
                     return value;
                 }
             }

@@ -16,8 +16,7 @@ public class Rewards extends SingleData<String> {
     public String get() {
         if (value != null) return value;
 
-        value = getValue(RewardsKey.INSTANCE.getConstants(), "-",
-                it -> it.getString(RewardsKey.INSTANCE.getConstants().getValueName()));
+        value = getValue(RewardsKey.INSTANCE.getConstants(), "-", String.class);
         RewardsKey.INSTANCE.updateCache(uuid, value);
         return value;
     }

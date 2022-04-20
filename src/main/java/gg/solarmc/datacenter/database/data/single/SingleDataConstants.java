@@ -15,7 +15,7 @@ public class SingleDataConstants {
 
     public String createTableQuery(String valueType, String defaultValue) {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
-                        "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "%s INTEGER PRIMARY KEY AUTO_INCREMENT," +
                         "%s VARCHAR(36) NOT NULL," +
                         "%s %s NOT NULL DEFAULT %s" +
                         ");",

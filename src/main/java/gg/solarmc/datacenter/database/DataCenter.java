@@ -2,13 +2,10 @@ package gg.solarmc.datacenter.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import gg.solarmc.datacenter.config.DatabaseConfig;
 import gg.solarmc.datacenter.database.data.Data;
 import gg.solarmc.datacenter.database.data.DataKey;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,37 +19,26 @@ public class DataCenter {
 
     private final HikariDataSource dataSource;
 
-    public DataCenter(Logger logger, Path dataFolder) {
+    public DataCenter(DatabaseConfig databaseConfig, Logger logger) {
         this.logger = logger;
 
-        // Create file for database
-        Path dbFilePath = dataFolder.resolve("database.db");
-        try {
-            if (Files.notExists(dbFilePath)) {
-                Files.createDirectories(dbFilePath.getParent());
-                Files.createFile(dbFilePath);
-                logger.info("Created database.db");
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName("org.mariadb.jdbc.Driver");
+        hikariConfig.setJdbcUrl(String.format("jdbc:mariadb://%s:%s/%s",
+                databaseConfig.host(),
+                databaseConfig.port(),
+                databaseConfig.database()));
+        hikariConfig.setUsername(databaseConfig.user());
+        hikariConfig.setPassword(databaseConfig.password());
+        hikariConfig.setMaximumPoolSize(8);
+        hikariConfig.setAutoCommit(false);
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+        hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");
+        hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        hikariConfig.addDataSourceProperty("useServerPrepStmts", "true");
 
-        // Load sqlite-jdbc
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("JDBC Driver not found");
-        }
-
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:" + dbFilePath);
-        config.setConnectionTestQuery("SELECT 1");
-        config.setMaximumPoolSize(8);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-        dataSource = new HikariDataSource(config);
+        dataSource = new HikariDataSource(hikariConfig);
     }
 
     // TODO: Store the keys and their columns
@@ -60,7 +46,7 @@ public class DataCenter {
     public void registerKey(DataKey<?> key) {
         if (dataKeys.stream().noneMatch(it -> it.getName().equals(key.getName()))) {
             String createQuery = key.getCreateQuery();
-            if(!createQuery.contains("IF NOT EXISTS")) {
+            if (!createQuery.contains("IF NOT EXISTS")) {
                 throw new IllegalArgumentException("Table create query should have `IF NOT EXISTS`");
             }
 

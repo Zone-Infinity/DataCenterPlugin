@@ -24,7 +24,7 @@ public class RewardsKey implements SingleDataKey<Rewards, String> {
 
     @Override
     public String getCreateQuery() {
-        return constants.createTableQuery("VARCHAR", "\"-\"");
+        return constants.createTableQuery("TEXT", "'-'");
     }
 
     @Override
