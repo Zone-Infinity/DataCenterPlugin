@@ -31,7 +31,7 @@ public class DataCenter {
         hikariConfig.setUsername(databaseConfig.user());
         hikariConfig.setPassword(databaseConfig.password());
         hikariConfig.setMaximumPoolSize(8);
-        hikariConfig.setAutoCommit(false);
+        hikariConfig.setAutoCommit(true);
         hikariConfig.setConnectionTestQuery("SELECT 1");
         hikariConfig.addDataSourceProperty("cachePrepStmts", "true");
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250");

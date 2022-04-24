@@ -3,6 +3,7 @@ package gg.solarmc.datacenter.database.data.mod.rewards;
 import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.single.SingleData;
 
+import java.sql.Types;
 import java.time.Instant;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class Rewards extends SingleData<String> {
     public void set(String value) {
         this.value = value;
         RewardsKey.INSTANCE.updateCache(uuid, value);
-        setValue(RewardsKey.INSTANCE.getConstants(), value);
+        setValue(RewardsKey.INSTANCE.getConstants(), value, Types.VARCHAR);
     }
 
     public CoolDown getCoolDown(String key) {

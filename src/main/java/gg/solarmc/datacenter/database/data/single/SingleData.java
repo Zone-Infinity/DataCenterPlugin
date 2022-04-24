@@ -36,32 +36,32 @@ public abstract class SingleData<T> extends Data {
 
             try (PreparedStatement insert = connection.prepareStatement(constants.insertPlayerQuery())) {
                 insert.setString(1, uuid);
-                insert.execute();
+                insert.executeUpdate();
 
                 return defaultValue;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SingleData#get caught an exception");
+            throw new RuntimeException("SingleData#getValue caught an exception", e);
         }
     }
 
-    protected final void setValue(SingleDataConstants constants, T value) {
+    protected final void setValue(SingleDataConstants constants, T value, int sqlType) {
         try (Connection connection = center.getConnection();
              PreparedStatement update = connection.prepareStatement(constants.setValueQuery())
         ) {
-            update.setObject(1, value);
+            update.setObject(1, value, sqlType);
             update.setString(2, uuid);
 
             int rows = update.executeUpdate();
             if (rows == 0) {
                 try (PreparedStatement insert = connection.prepareStatement(constants.insertPlayerWithValueQuery())) {
                     insert.setString(1, uuid);
-                    insert.setObject(2, value);
-                    insert.execute();
+                    insert.setObject(2, value, sqlType);
+                    insert.executeUpdate();
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SingleData#update caught an exception:", e);
+            throw new RuntimeException("SingleData#setValue caught an exception:", e);
         }
     }
 }

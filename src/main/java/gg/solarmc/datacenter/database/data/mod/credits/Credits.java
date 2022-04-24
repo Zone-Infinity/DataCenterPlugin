@@ -3,6 +3,8 @@ package gg.solarmc.datacenter.database.data.mod.credits;
 import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.single.SingleData;
 
+import java.sql.Types;
+
 public class Credits extends SingleData<Double> {
     public Credits(DataCenter center, String uuid, Double value) {
         super(center, uuid, value);
@@ -23,7 +25,7 @@ public class Credits extends SingleData<Double> {
 
         this.value = value;
         CreditsKey.INSTANCE.updateCache(uuid, value);
-        setValue(CreditsKey.INSTANCE.getConstants(), value);
+        setValue(CreditsKey.INSTANCE.getConstants(), value, Types.DOUBLE);
     }
 
     public void add(double balance) {
