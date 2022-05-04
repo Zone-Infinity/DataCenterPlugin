@@ -1,25 +1,27 @@
 package gg.solarmc.datacenter.database.data.single;
 
+import gg.solarmc.datacenter.database.data.Column;
+
 public class SingleDataConstants {
     private final String tableName;
     private final String id;
     private final String uuid;
-    private final String value;
+    private final Column value;
 
-    public SingleDataConstants(String tableName, String value) {
+    public SingleDataConstants(String tableName, Column valueColumn) {
         this.tableName = tableName;
         this.id = "id";
         this.uuid = "uuid";
-        this.value = value;
+        this.value = valueColumn;
     }
 
-    public String createTableQuery(String valueType, String defaultValue) {
+    public String createTableQuery() {
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                         "%s INTEGER PRIMARY KEY AUTO_INCREMENT," +
                         "%s VARCHAR(36) NOT NULL," +
                         "%s %s NOT NULL DEFAULT %s" +
                         ");",
-                tableName, id, uuid, value, valueType, defaultValue
+                tableName, id, uuid, value.getName(), value.getType(), value.getDefaultValue()
         );
     }
 
@@ -48,6 +50,6 @@ public class SingleDataConstants {
     }
 
     public String getValueName() {
-        return value;
+        return value.getName();
     }
 }
