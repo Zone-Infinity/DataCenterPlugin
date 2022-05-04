@@ -3,14 +3,7 @@ package gg.solarmc.datacenter;
 import gg.solarmc.datacenter.config.ConfigManager;
 import gg.solarmc.datacenter.config.DatabaseConfig;
 import gg.solarmc.datacenter.database.DataCenter;
-import gg.solarmc.datacenter.database.data.mod.credits.CreditsKey;
-import gg.solarmc.datacenter.database.data.mod.rewards.RewardsKey;
 import org.bukkit.plugin.java.JavaPlugin;
-
-/**
- * Alternative to DataLoader, not that good
- * Not able to figure out how to Launch DataLoader
- */
 
 public final class SolarDataCenter extends JavaPlugin {
     private DataCenter center;
@@ -22,8 +15,6 @@ public final class SolarDataCenter extends JavaPlugin {
         DatabaseConfig databaseConfig = config.getConfigData();
 
         center = new DataCenter(databaseConfig, getLogger());
-        center.registerKey(CreditsKey.INSTANCE);
-        center.registerKey(RewardsKey.INSTANCE);
 
         getLogger().info("SolarDataCenter successfully enabled");
     }
