@@ -20,7 +20,7 @@ public abstract class SingleData<T> extends Data {
 
     public abstract void set(T value);
 
-    abstract <K extends SingleData<T>> SingleDataKey<K, T> getDataKey();
+    protected abstract SingleDataKey<? extends SingleData<T>, T> getDataKey();
 
     protected final T getValue(SingleDataConstants constants, T defaultValue, Class<T> klass) {
         try (Connection connection = center.getConnection();
