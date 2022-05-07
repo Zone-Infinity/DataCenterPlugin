@@ -20,6 +20,8 @@ public abstract class SingleData<T> extends Data {
 
     public abstract void set(T value);
 
+    abstract <K extends SingleData<T>> SingleDataKey<K, T> getDataKey();
+
     protected final T getValue(SingleDataConstants constants, T defaultValue, Class<T> klass) {
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery())
@@ -28,8 +30,8 @@ public abstract class SingleData<T> extends Data {
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
-                    //noinspection UnnecessaryLocalVariable
                     T value = result.getObject(constants.getValueName(), klass);
+                    getDataKey().updateCache(uuid, value);
                     return value;
                 }
             }
@@ -38,6 +40,7 @@ public abstract class SingleData<T> extends Data {
                 insert.setString(1, uuid);
                 insert.executeUpdate();
 
+                getDataKey().updateCache(uuid, defaultValue);
                 return defaultValue;
             }
         } catch (SQLException e) {
@@ -58,6 +61,8 @@ public abstract class SingleData<T> extends Data {
                     insert.setString(1, uuid);
                     insert.setObject(2, value, sqlType);
                     insert.executeUpdate();
+
+                    getDataKey().updateCache(uuid, value);
                 }
             }
         } catch (SQLException e) {
