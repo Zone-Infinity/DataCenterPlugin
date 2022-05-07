@@ -22,7 +22,8 @@ public abstract class SingleData<T> extends Data {
 
     protected abstract SingleDataKey<? extends SingleData<T>, T> getDataKey();
 
-    protected final T getValue(SingleDataConstants constants, T defaultValue, Class<T> klass) {
+    protected final T getValue(T defaultValue, Class<T> klass) {
+        SingleDataConstants constants = getDataKey().getConstants();
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery())
         ) {
@@ -48,7 +49,8 @@ public abstract class SingleData<T> extends Data {
         }
     }
 
-    protected final void setValue(SingleDataConstants constants, T value, int sqlType) {
+    protected final void setValue(T value, int sqlType) {
+        SingleDataConstants constants = getDataKey().getConstants();
         try (Connection connection = center.getConnection();
              PreparedStatement update = connection.prepareStatement(constants.setValueQuery())
         ) {
