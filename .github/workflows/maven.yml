@@ -32,5 +32,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: datacenter-jar
-          path: target/datacenter.jar
+          path: target/datacenter-latest.jar
           if-no-files-found: error

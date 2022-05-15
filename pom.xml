@@ -100,7 +100,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${project.artifactId}</finalName>
+                            <finalName>${project.artifactId}-latest</finalName>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
