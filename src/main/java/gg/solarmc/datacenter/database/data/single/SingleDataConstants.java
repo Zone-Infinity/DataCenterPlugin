@@ -21,7 +21,7 @@ public class SingleDataConstants {
                         "%s VARCHAR(36) NOT NULL," +
                         "%s %s NOT NULL DEFAULT %s" +
                         ");",
-                tableName, id, uuid, value.getName(), value.getType(), value.getDefaultValue()
+                tableName, id, uuid, getValueName(), value.getType(), value.getDefaultValue()
         );
     }
 
@@ -30,15 +30,15 @@ public class SingleDataConstants {
     }
 
     public String insertPlayerWithValueQuery() {
-        return String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", tableName, uuid, value);
+        return String.format("INSERT INTO %s (%s, %s) VALUES (?, ?)", tableName, uuid, getValueName());
     }
 
     public String selectValueQuery() {
-        return String.format("SELECT %s FROM %s WHERE %s = ?", value, tableName, uuid);
+        return String.format("SELECT %s FROM %s WHERE %s = ?", getValueName(), tableName, uuid);
     }
 
     public String setValueQuery() {
-        return String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, value, uuid);
+        return String.format("UPDATE %s SET %s = ? WHERE %s = ?", tableName, getValueName(), uuid);
     }
 
     public String getTableName() {
