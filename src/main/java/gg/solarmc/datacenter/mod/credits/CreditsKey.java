@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreditsKey implements SingleDataKey<Credits, Double> {
-    public static CreditsKey INSTANCE = new CreditsKey();
+    public static final CreditsKey INSTANCE = new CreditsKey();
 
     private final Map<String, Double> cache = new HashMap<>();
     private final SingleDataConstants constants;
@@ -30,7 +30,9 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
 
     @Override
     public Credits getData(DataCenter center, String uuid) {
-        return new Credits(center, uuid, cache.get(uuid));
+        Double value = cache.get(uuid);
+        System.out.println(value);
+        return new Credits(center, uuid, value);
     }
 
     @Override
@@ -40,6 +42,7 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
 
     @Override
     public void updateCache(String uuid, Double value) {
+        System.out.println(value);
         cache.put(uuid, value);
     }
 }

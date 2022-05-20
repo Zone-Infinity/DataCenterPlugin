@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RewardsKey implements SingleDataKey<Rewards, String> {
-    public static RewardsKey INSTANCE = new RewardsKey();
+    public static final RewardsKey INSTANCE = new RewardsKey();
 
     private final Map<String, String> cache = new HashMap<>();
     private final SingleDataConstants constants;
