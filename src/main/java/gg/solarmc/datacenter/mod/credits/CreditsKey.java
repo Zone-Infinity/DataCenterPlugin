@@ -30,9 +30,7 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
 
     @Override
     public Credits getData(DataCenter center, String uuid) {
-        Double value = cache.get(uuid);
-        System.out.println(value);
-        return new Credits(center, uuid, value);
+        return new Credits(center, uuid, cache.get(uuid));
     }
 
     @Override
@@ -42,7 +40,6 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
 
     @Override
     public void updateCache(String uuid, Double value) {
-        System.out.println(value);
         cache.put(uuid, value);
     }
 }
