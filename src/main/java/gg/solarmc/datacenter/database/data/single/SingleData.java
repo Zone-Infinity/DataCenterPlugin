@@ -45,7 +45,8 @@ public abstract class SingleData<T> extends Data {
                 return defaultValue;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("SingleData#getValue caught an exception", e);
+            e.printStackTrace(); // for better debugging
+            throw new RuntimeException("SingleData#getValue caught an exception");
         }
     }
 
@@ -63,12 +64,12 @@ public abstract class SingleData<T> extends Data {
                     insert.setString(1, uuid);
                     insert.setObject(2, value, sqlType);
                     insert.executeUpdate();
-
-                    getDataKey().updateCache(uuid, value);
                 }
             }
+            getDataKey().updateCache(uuid, value);
         } catch (SQLException e) {
-            throw new RuntimeException("SingleData#setValue caught an exception:", e);
+            e.printStackTrace();
+            throw new RuntimeException("SingleData#setValue caught an exception");
         }
     }
 }
