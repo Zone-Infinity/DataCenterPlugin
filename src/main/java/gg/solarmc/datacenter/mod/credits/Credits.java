@@ -28,8 +28,8 @@ public class Credits extends SingleData<Double> {
     }
 
     public void add(double balance) {
-        if (value == null) get();
-
+        //if (value == null) get();
+        value = getValue(0.0, Double.class);
         value += balance;
         set(value);
     }

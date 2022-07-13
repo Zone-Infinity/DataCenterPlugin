@@ -8,10 +8,14 @@ import gg.solarmc.datacenter.mod.rewards.RewardsKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SolarDataCenter extends JavaPlugin {
+
+    public static SolarDataCenter ins;
+
     private DataCenter center;
 
     @Override
     public void onEnable() {
+        ins = this;
         ConfigManager<DatabaseConfig> config = ConfigManager.create(getDataFolder().toPath(), "config.yml", DatabaseConfig.class);
         config.reloadConfig();
         DatabaseConfig databaseConfig = config.getConfigData();
