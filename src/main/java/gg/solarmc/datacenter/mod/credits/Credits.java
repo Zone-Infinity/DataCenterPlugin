@@ -7,15 +7,18 @@ import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 import java.sql.Types;
 
 public class Credits extends SingleData<Double> {
+    private long lastAccessed = 0;
+
     public Credits(DataCenter center, String uuid, Double value) {
         super(center, uuid, value);
     }
 
     @Override
     public Double get() {
-        if (value != null) return value;
+        if (value != null && System.currentTimeMillis() - this.lastAccessed < 30000) return value;
 
         value = getValue(0.0, Double.class);
+        this.lastAccessed = System.currentTimeMillis();
         return value;
     }
 
@@ -25,6 +28,7 @@ public class Credits extends SingleData<Double> {
 
         this.value = value;
         setValue(value, Types.DOUBLE);
+        this.lastAccessed = System.currentTimeMillis();
     }
 
     public void add(double balance) {
