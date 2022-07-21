@@ -54,6 +54,7 @@ public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
                 while (result.next()) {
                     UUID uuid = UUID.fromString(result.getString(constants.getUUIDName()));
                     int streak = result.getInt(constants.getValueName());
+                    System.out.println(uuid + " " + streak);
                     killStreaks.put(uuid, streak);
                 }
             }
