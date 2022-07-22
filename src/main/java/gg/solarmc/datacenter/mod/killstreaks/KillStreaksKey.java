@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,7 +50,7 @@ public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
                      limit
              ))
         ) {
-            Map<UUID, Integer> killStreaks = new HashMap<>();
+            Map<UUID, Integer> killStreaks = new LinkedHashMap<>();
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     UUID uuid = UUID.fromString(result.getString(constants.getUUIDName()));
