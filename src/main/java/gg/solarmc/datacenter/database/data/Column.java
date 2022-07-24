@@ -6,12 +6,14 @@ public class Column<T> {
     // https://mariadb.com/kb/en/data-types/
     private final String type;
     private final int sqlType;
+    private final Class<T> typeClass;
     private final T defaultValue;
 
-    public Column(String name, String type, int sqlType, T defaultValue) {
+    public Column(String name, String type, int sqlType, Class<T> typeClass, T defaultValue) {
         this.name = name;
         this.type = type;
         this.sqlType = sqlType;
+        this.typeClass = typeClass;
         this.defaultValue = defaultValue;
     }
 
@@ -29,5 +31,9 @@ public class Column<T> {
 
     public T getDefaultValue() {
         return defaultValue;
+    }
+
+    public Class<T> getTypeClass() {
+        return typeClass;
     }
 }
