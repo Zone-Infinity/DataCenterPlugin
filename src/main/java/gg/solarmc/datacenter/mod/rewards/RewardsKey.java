@@ -5,17 +5,14 @@ import gg.solarmc.datacenter.database.data.Column;
 import gg.solarmc.datacenter.database.data.single.SingleDataConstants;
 import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Types;
 
-public class RewardsKey implements SingleDataKey<Rewards, String> {
+public class RewardsKey extends SingleDataKey<Rewards, String> {
     public static final RewardsKey INSTANCE = new RewardsKey();
-
-    private final Map<String, String> cache = new HashMap<>();
-    private final SingleDataConstants constants;
+    private final SingleDataConstants<String> constants;
 
     private RewardsKey() {
-        constants = new SingleDataConstants("rewards_cooldown", new Column("claims_expiry", "TEXT", "'-'"));
+        constants = new SingleDataConstants<>("rewards_cooldown", new Column<>("claims_expiry", "TEXT", Types.VARCHAR, "'-'"));
     }
 
     @Override
@@ -34,12 +31,7 @@ public class RewardsKey implements SingleDataKey<Rewards, String> {
     }
 
     @Override
-    public SingleDataConstants getConstants() {
+    public SingleDataConstants<String> getConstants() {
         return constants;
-    }
-
-    @Override
-    public void updateCache(String uuid, String value) {
-        cache.put(uuid, value);
     }
 }

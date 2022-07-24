@@ -4,8 +4,6 @@ import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.single.SingleData;
 import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
-import java.sql.Types;
-
 public class Credits extends SingleData<Double> {
     private long lastAccessed = 0;
 
@@ -17,7 +15,7 @@ public class Credits extends SingleData<Double> {
     public Double get() {
         if (value != null && System.currentTimeMillis() - this.lastAccessed < 30000) return value;
 
-        value = getValue(0.0, Double.class);
+        value = getValue(Double.class);
         this.lastAccessed = System.currentTimeMillis();
         return value;
     }
@@ -27,13 +25,13 @@ public class Credits extends SingleData<Double> {
         if (value == null) throw new IllegalArgumentException("value cannot be null!");
 
         this.value = value;
-        setValue(value, Types.DOUBLE);
+        setValue(value);
         this.lastAccessed = System.currentTimeMillis();
     }
 
     public void add(double balance) {
-        //if (value == null) get();
-        value = getValue(0.0, Double.class);
+        // if (value == null) get();
+        value = getValue(Double.class);
         value += balance;
         set(value);
     }

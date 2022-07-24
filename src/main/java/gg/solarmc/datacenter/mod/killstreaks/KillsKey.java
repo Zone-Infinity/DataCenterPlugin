@@ -2,31 +2,28 @@ package gg.solarmc.datacenter.mod.killstreaks;
 
 import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.Column;
-import gg.solarmc.datacenter.database.data.single.SingleDataConstants;
-import gg.solarmc.datacenter.database.data.single.SingleDataKey;
+import gg.solarmc.datacenter.database.data.multiple.MultipleDataConstants;
+import gg.solarmc.datacenter.database.data.multiple.MultipleDataKey;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
-    public static final KillStreaksKey INSTANCE = new KillStreaksKey();
+public class KillsKey extends MultipleDataKey<Kills> {
+    public static final KillsKey INSTANCE = new KillsKey();
+    public static final Column<Integer> TOP_KILL_STREAK = new Column<>("top_streak", "INTEGER", Types.INTEGER, 0);
+    public static final Column<Integer> KILLS = new Column<>("kills", "INTEGER", Types.INTEGER, 0);
 
-    private final Map<String, Integer> cache = new HashMap<>();
-    private final SingleDataConstants constants;
+    private final MultipleDataConstants constants;
 
-    private KillStreaksKey() {
-        constants = new SingleDataConstants("kill_streaks", new Column("top_streak", "INTEGER", "0"));
+    private KillsKey() {
+        constants = new MultipleDataConstants("kills", KILLS, TOP_KILL_STREAK);
     }
 
     @Override
     public String getName() {
-        return "kill_streaks";
+        return "kills";
     }
 
     @Override
@@ -35,18 +32,19 @@ public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
     }
 
     @Override
-    public KillStreaks getData(DataCenter center, String uuid) {
-        return new KillStreaks(center, uuid, cache.get(uuid));
+    public Kills getData(DataCenter center, String uuid) {
+        return new Kills(center, uuid, cache.get(uuid));
     }
 
     public Map<UUID, Integer> getTopKillStreaks(DataCenter center, int limit) {
+        String topKillStreakColumnName = TOP_KILL_STREAK.getName();
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(String.format(
                      "SELECT %s, %s FROM %s ORDER BY %s DESC LIMIT %s",
                      constants.getUUIDName(),
-                     constants.getValueName(),
+                     topKillStreakColumnName,
                      constants.getTableName(),
-                     constants.getValueName(),
+                     topKillStreakColumnName,
                      limit
              ))
         ) {
@@ -54,8 +52,7 @@ public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     UUID uuid = UUID.fromString(result.getString(constants.getUUIDName()));
-                    int streak = result.getInt(constants.getValueName());
-                    System.out.println(uuid + " " + streak);
+                    int streak = result.getInt(topKillStreakColumnName);
                     killStreaks.put(uuid, streak);
                 }
             }
@@ -68,12 +65,7 @@ public class KillStreaksKey implements SingleDataKey<KillStreaks, Integer> {
     }
 
     @Override
-    public void updateCache(String uuid, Integer value) {
-        cache.put(uuid, value);
-    }
-
-    @Override
-    public SingleDataConstants getConstants() {
+    public MultipleDataConstants getConstants() {
         return constants;
     }
 }

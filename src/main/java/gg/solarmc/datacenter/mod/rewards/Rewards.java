@@ -4,7 +4,6 @@ import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.single.SingleData;
 import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
-import java.sql.Types;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,14 +17,14 @@ public class Rewards extends SingleData<String> {
     public String get() {
         if (value != null) return value;
 
-        value = getValue("-", String.class);
+        value = getValue(String.class);
         return value;
     }
 
     @Override
     public void set(String value) {
         this.value = value;
-        setValue(value, Types.VARCHAR);
+        setValue(value);
     }
 
     @Override

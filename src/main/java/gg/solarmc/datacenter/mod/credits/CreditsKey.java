@@ -5,17 +5,14 @@ import gg.solarmc.datacenter.database.data.Column;
 import gg.solarmc.datacenter.database.data.single.SingleDataConstants;
 import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Types;
 
-public class CreditsKey implements SingleDataKey<Credits, Double> {
+public class CreditsKey extends SingleDataKey<Credits, Double> {
     public static final CreditsKey INSTANCE = new CreditsKey();
-
-    private final Map<String, Double> cache = new HashMap<>();
-    private final SingleDataConstants constants;
+    private final SingleDataConstants<Double> constants;
 
     private CreditsKey() {
-        constants = new SingleDataConstants("credits", new Column("balance", "NUMERIC(15, 3)", "0"));
+        constants = new SingleDataConstants<>("credits", new Column<>("balance", "NUMERIC(15, 3)", Types.DOUBLE, 0.0));
     }
 
     @Override
@@ -34,12 +31,7 @@ public class CreditsKey implements SingleDataKey<Credits, Double> {
     }
 
     @Override
-    public SingleDataConstants getConstants() {
+    public SingleDataConstants<Double> getConstants() {
         return constants;
-    }
-
-    @Override
-    public void updateCache(String uuid, Double value) {
-        cache.put(uuid, value);
     }
 }

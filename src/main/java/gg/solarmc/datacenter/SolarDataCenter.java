@@ -4,7 +4,7 @@ import gg.solarmc.datacenter.config.ConfigManager;
 import gg.solarmc.datacenter.config.DatabaseConfig;
 import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.mod.credits.CreditsKey;
-import gg.solarmc.datacenter.mod.killstreaks.KillStreaksKey;
+import gg.solarmc.datacenter.mod.killstreaks.KillsKey;
 import gg.solarmc.datacenter.mod.rewards.RewardsKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +24,7 @@ public final class SolarDataCenter extends JavaPlugin {
         center = new DataCenter(databaseConfig, getLogger());
         center.registerKey(CreditsKey.INSTANCE);
         center.registerKey(RewardsKey.INSTANCE);
-        center.registerKey(KillStreaksKey.INSTANCE);
+        center.registerKey(KillsKey.INSTANCE);
 
         getLogger().info("SolarDataCenter successfully enabled");
     }
