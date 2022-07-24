@@ -12,7 +12,7 @@ public class CreditsKey extends SingleDataKey<Credits, Double> {
     private final SingleDataConstants<Double> constants;
 
     private CreditsKey() {
-        constants = new SingleDataConstants<>("credits", new Column<>("balance", "NUMERIC(15, 3)", Types.DOUBLE, 0.0));
+        constants = new SingleDataConstants<>("credits", new Column<>("balance", "NUMERIC(15, 3)", Types.DOUBLE, Double.class, 0.0));
     }
 
     @Override

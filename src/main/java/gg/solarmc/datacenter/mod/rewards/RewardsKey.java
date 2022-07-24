@@ -12,7 +12,7 @@ public class RewardsKey extends SingleDataKey<Rewards, String> {
     private final SingleDataConstants<String> constants;
 
     private RewardsKey() {
-        constants = new SingleDataConstants<>("rewards_cooldown", new Column<>("claims_expiry", "TEXT", Types.VARCHAR, "'-'"));
+        constants = new SingleDataConstants<>("rewards_cooldown", new Column<>("claims_expiry", "TEXT", Types.VARCHAR, String.class, "'-'"));
     }
 
     @Override

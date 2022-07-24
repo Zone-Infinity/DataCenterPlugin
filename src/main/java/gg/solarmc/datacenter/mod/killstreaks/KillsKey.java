@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class KillsKey extends MultipleDataKey<Kills> {
     public static final KillsKey INSTANCE = new KillsKey();
-    public static final Column<Integer> TOP_KILL_STREAK = new Column<>("top_streak", "INTEGER", Types.INTEGER, 0);
-    public static final Column<Integer> KILLS = new Column<>("kills", "INTEGER", Types.INTEGER, 0);
+    public static final Column<Integer> TOP_KILL_STREAK = new Column<>("top_streak", "INTEGER", Types.INTEGER, Integer.class, 0);
+    public static final Column<Integer> KILLS = new Column<>("kills", "INTEGER", Types.INTEGER, Integer.class, 0);
 
     private final MultipleDataConstants constants;
 
