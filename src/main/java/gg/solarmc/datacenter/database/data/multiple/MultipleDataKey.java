@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class MultipleDataKey<T extends Data> implements DataKey<T> {
-    protected Map<String, Map<Column<?>, Object>> cache;
+    protected Map<String, Map<Column<?>, Object>> cache = new HashMap<>();
 
     public <K> void updateCache(String uuid, Column<K> column, K value) {
         cache.computeIfAbsent(uuid, it -> new HashMap<>()).put(column, value);
