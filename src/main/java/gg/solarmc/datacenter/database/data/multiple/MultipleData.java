@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class MultipleData extends Data {
@@ -16,6 +17,7 @@ public abstract class MultipleData extends Data {
     public MultipleData(DataCenter center, String uuid, Map<Column<?>, Object> values) {
         super(center, uuid);
         this.values = values;
+        if (values == null) this.values = new HashMap<>();
     }
 
     public <T> T get(Column<T> column) {
