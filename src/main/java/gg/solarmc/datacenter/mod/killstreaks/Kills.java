@@ -18,7 +18,7 @@ public class Kills extends MultipleData {
         Object value = values.get(column);
         if (value != null) return (T) value;
 
-        value = getValue(column, column.getTypeClass());
+        value = getValue(column);
         return (T) value;
     }
 

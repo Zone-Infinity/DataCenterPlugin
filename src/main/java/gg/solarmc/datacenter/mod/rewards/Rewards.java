@@ -17,7 +17,7 @@ public class Rewards extends SingleData<String> {
     public String get() {
         if (value != null) return value;
 
-        value = getValue(String.class);
+        value = getValue();
         return value;
     }
 

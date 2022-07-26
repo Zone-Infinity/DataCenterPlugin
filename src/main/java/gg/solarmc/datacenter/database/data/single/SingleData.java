@@ -17,8 +17,8 @@ public abstract class SingleData<T> extends MultipleData {
 
     protected abstract SingleDataKey<? extends SingleData<T>, T> getDataKey();
 
-    protected final T getValue(Class<T> klass) {
-        T got = getValue(getDataKey().getConstants().getValueColumn(), klass);
+    protected final T getValue() {
+        T got = getValue(getDataKey().getConstants().getValueColumn());
         getDataKey().updateCache(uuid, got);
         return got;
     }

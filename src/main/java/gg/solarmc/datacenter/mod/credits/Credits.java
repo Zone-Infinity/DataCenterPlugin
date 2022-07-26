@@ -15,7 +15,7 @@ public class Credits extends SingleData<Double> {
     public Double get() {
         if (value != null && System.currentTimeMillis() - this.lastAccessed < 30000) return value;
 
-        value = getValue(Double.class);
+        value = getValue();
         this.lastAccessed = System.currentTimeMillis();
         return value;
     }
@@ -31,7 +31,7 @@ public class Credits extends SingleData<Double> {
 
     public void add(double balance) {
         // if (value == null) get();
-        value = getValue(Double.class);
+        value = getValue();
         value += balance;
         set(value);
     }

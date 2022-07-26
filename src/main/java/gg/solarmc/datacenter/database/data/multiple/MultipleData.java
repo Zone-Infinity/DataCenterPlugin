@@ -30,7 +30,7 @@ public abstract class MultipleData extends Data {
 
     protected abstract MultipleDataKey<? extends MultipleData> getDataKey();
 
-    protected final <T> T getValue(Column<T> column, Class<T> klass) {
+    protected final <T> T getValue(Column<T> column) {
         MultipleDataConstants constants = getDataKey().getConstants();
         try (Connection connection = center.getConnection();
              PreparedStatement statement = connection.prepareStatement(constants.selectValueQuery(column))
@@ -39,7 +39,7 @@ public abstract class MultipleData extends Data {
 
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
-                    T value = result.getObject(column.getName(), klass);
+                    T value = result.getObject(column.getName(), column.getTypeClass());
                     getDataKey().updateCache(uuid, column, value);
                     return value;
                 }
@@ -55,7 +55,7 @@ public abstract class MultipleData extends Data {
             }
         } catch (SQLException e) {
             e.printStackTrace(); // for better debugging
-            throw new RuntimeException("SingleData#getValue caught an exception");
+            throw new RuntimeException("Data#getValue caught an exception");
         }
     }
 
@@ -79,7 +79,7 @@ public abstract class MultipleData extends Data {
             getDataKey().updateCache(uuid, column, value);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new RuntimeException("SingleData#setValue caught an exception");
+            throw new RuntimeException("Data#setValue caught an exception");
         }
     }
 }

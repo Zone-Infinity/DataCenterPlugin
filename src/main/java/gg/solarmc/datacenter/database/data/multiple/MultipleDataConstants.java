@@ -27,6 +27,7 @@ public class MultipleDataConstants {
                 .collect(Collectors.joining(",\n"));
         return String.format("CREATE TABLE IF NOT EXISTS %s (" +
                         "%s INTEGER PRIMARY KEY AUTO_INCREMENT," +
+                        "%s VARCHAR(36) NOT NULL," +
                         columns +
                         ");",
                 tableName, id, uuid
