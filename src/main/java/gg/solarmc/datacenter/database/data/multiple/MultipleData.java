@@ -50,6 +50,8 @@ public abstract class MultipleData extends Data {
                 insert.executeUpdate();
 
                 T defaultValue = column.getDefaultValue();
+                if (defaultValue instanceof String)
+                    defaultValue = (T) ((String) defaultValue).replaceAll("'", "");
                 getDataKey().updateCache(uuid, column, defaultValue);
                 return defaultValue;
             }
