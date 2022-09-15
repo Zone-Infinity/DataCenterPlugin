@@ -29,10 +29,6 @@ public final class SolarDataCenter extends JavaPlugin {
         getLogger().info("SolarDataCenter successfully enabled");
     }
 
-    @Override
-    public void onDisable() {
-    }
-
     public DataCenter getDataCenter() {
         return center;
     }

@@ -4,6 +4,8 @@ import gg.solarmc.datacenter.database.DataCenter;
 import gg.solarmc.datacenter.database.data.single.SingleData;
 import gg.solarmc.datacenter.database.data.single.SingleDataKey;
 
+import java.util.Objects;
+
 public class Credits extends SingleData<Double> {
     private long lastAccessed = 0;
 
@@ -22,7 +24,7 @@ public class Credits extends SingleData<Double> {
 
     @Override
     public void set(Double value) {
-        if (value == null) throw new IllegalArgumentException("value cannot be null!");
+        Objects.requireNonNull(value, "value cannot be null!");
 
         this.value = value;
         setValue(value);
